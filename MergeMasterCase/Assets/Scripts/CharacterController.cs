@@ -16,13 +16,6 @@ public class CharacterController : MonoBehaviour
     public int characterLevel
     {
         get { return _characterLevel; }
-        set
-        {
-            if (value > 0 && value < 5)
-            {
-                _characterLevel = value;
-            }
-        }
     }
 
     private void Start()
@@ -51,11 +44,15 @@ public class CharacterController : MonoBehaviour
     {
         if (Physics.Raycast(transform.position, Vector3.down, out hit, Mathf.Infinity, characterType.characterLayerMask))
         {
-            if (hit.transform.tag == transform.tag && characterLevel == hit.transform.gameObject.GetComponent<CharacterController>().characterLevel)
+            if (hit.transform.tag == transform.tag && characterLevel == hit.transform.gameObject.GetComponent<CharacterController>().characterLevel && characterLevel < 4)
             {
                 hit.transform.gameObject.SetActive(false);
                 mergeController.CharacterMerge(hit.transform, characterLevel);
                 gameObject.SetActive(false);
+            }
+            else
+            {
+                //Callback posiition;
             }
         }
     }
