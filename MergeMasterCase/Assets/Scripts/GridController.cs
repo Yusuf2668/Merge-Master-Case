@@ -14,9 +14,9 @@ public class GridController : MonoBehaviour
     GameObject previousCharacter;
     GameObject selectedGrid;
 
+
     void Update()
     {
-        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Input.touchCount > 0)
         {
             CharacterMove();
@@ -29,6 +29,7 @@ public class GridController : MonoBehaviour
 
     void CharacterMove()
     {
+        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out characterHit, Mathf.Infinity, characterType.characterLayerMask)) //karakterlerin hareketleri için atýlan ýþýn
         {
             selectedCharacter = characterHit.transform.gameObject;
@@ -43,17 +44,32 @@ public class GridController : MonoBehaviour
             }
         }
     }
-
-    void GridSelector()
+    public void GridSelector()
     {
-        if (Physics.Raycast(ray, out gridHit, Mathf.Infinity, characterType.gridLayerMask) && selectedCharacter != null) //seçtiðimiz karakterlerin karelere yerleþmesi için atýlan ýþýn
+        if (selectedCharacter != null)
         {
-            selectedGrid = gridHit.transform.gameObject;
-            previousCharacter.GetComponent<Collider>().isTrigger = false;
-            previousCharacter.GetComponent<Rigidbody>().isKinematic = false;
-            selectedCharacter.transform.position = new Vector3(selectedGrid.transform.position.x, selectedCharacter.transform.position.y, selectedGrid.transform.position.z);
+            Debug.Log("aldý");
+            if (Physics.Raycast(selectedCharacter.transform.position, Vector3.down, out gridHit, Mathf.Infinity, characterType.gridLayerMask) && !Physics.Raycast(selectedCharacter.transform.position, Vector3.down, Mathf.Infinity, characterType.characterLayerMask)) //seçtiðimiz karakterlerin karelere yerleþmesi için atýlan ýþýn
+            {
+                Debug.Log("býraktý");
+
+                selectedGrid = gridHit.transform.gameObject;
+                previousCharacter.GetComponent<Collider>().isTrigger = false;
+                previousCharacter.GetComponent<Rigidbody>().isKinematic = false;
+                if (!selectedCharacter.GetComponent<CharacterController>().canBackLastPosisiton)
+                {
+                    selectedCharacter.transform.position = new Vector3(selectedGrid.transform.position.x, selectedCharacter.transform.position.y, selectedGrid.transform.position.z);
+                    selectedCharacter.GetComponent<CharacterController>().lastPosition = selectedGrid.transform.position;
+                }
+            }
+            else
+            {
+                Debug.Log("býrakmadý");
+
+                selectedCharacter.GetComponent<CharacterController>().CallBackLastPosition();
+            }
+            selectedCharacter = null;
+            previousCharacter = null;
         }
-        selectedCharacter = null;
-        previousCharacter = null;
     }
 }

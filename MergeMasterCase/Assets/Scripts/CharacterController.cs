@@ -4,56 +4,69 @@ using UnityEngine;
 
 public class CharacterController : MonoBehaviour
 {
-    public bool canHit;
+    [HideInInspector] public bool canHit;
+    [HideInInspector] public bool canBackLastPosisiton;
+    [HideInInspector] public Vector3 lastPosition;
 
     [SerializeField] int _characterLevel;
     [SerializeField] CharacterType characterType;
 
     MergeController mergeController;
 
-    RaycastHit hit;
+    RaycastHit mergeCharacterHit;
+    RaycastHit gridPositionHit;
 
     public int characterLevel
     {
         get { return _characterLevel; }
     }
 
-    private void Start()
+    private void OnEnable()
     {
+        canHit = true;
+        canBackLastPosisiton = false;
         mergeController = GameObject.FindObjectOfType<MergeController>();
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Grid")) //baþlangýötaki konumlarýný griplerin içine göre ayarlýyor
-        {
-            gameObject.transform.position = new Vector3(other.transform.position.x, gameObject.transform.position.y, other.transform.position.z);
-        }
+        lastPosition = transform.position;
+        RaycastToFindGrid(); // baþlanðýçta ki pozisyonlarýný gridlere göre ayarlamak için 
     }
 
     private void Update()
     {
         if (canHit && Input.touchCount == 0)
         {
-            StartRaycast();
+            RaycastToFindMergeCharacter();
             canHit = false;
         }
     }
 
-    public void StartRaycast()
+    public void RaycastToFindMergeCharacter()
     {
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, Mathf.Infinity, characterType.characterLayerMask))
+        if (Physics.Raycast(transform.position, Vector3.down, out mergeCharacterHit, Mathf.Infinity, characterType.characterLayerMask))
         {
-            if (hit.transform.tag == transform.tag && characterLevel == hit.transform.gameObject.GetComponent<CharacterController>().characterLevel && characterLevel < 4)
+            if (mergeCharacterHit.transform.tag == transform.tag && characterLevel == mergeCharacterHit.transform.gameObject.GetComponent<CharacterController>().characterLevel && characterLevel < 4)
             {
-                hit.transform.gameObject.SetActive(false);
-                mergeController.CharacterMerge(hit.transform, characterLevel);
+                canBackLastPosisiton = false;
+                mergeCharacterHit.transform.gameObject.SetActive(false);
+                mergeController.CharacterMerge(mergeCharacterHit.transform, characterLevel);
                 gameObject.SetActive(false);
             }
             else
             {
-                //Callback posiition;
+                canBackLastPosisiton = true;
+                CallBackLastPosition();
             }
+        }
+    }
+    public void CallBackLastPosition()
+    {
+        transform.position = lastPosition;
+    }
+
+    void RaycastToFindGrid()
+    {
+        if (Physics.Raycast(transform.position + new Vector3(0, 5, 0), Vector3.down, out gridPositionHit, Mathf.Infinity, characterType.gridLayerMask))
+        {
+            transform.position = gridPositionHit.transform.position;
         }
     }
 }

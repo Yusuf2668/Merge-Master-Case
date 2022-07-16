@@ -17,16 +17,19 @@ public class MergeController : MonoBehaviour
         {
             case 1:
                 level02CharacterList[0].gameObject.transform.position = spawnPosiiton.position;
+                level02CharacterList[0].gameObject.transform.SetParent(null);
                 level02CharacterList[0].gameObject.SetActive(true);
                 level02CharacterList.RemoveAt(0);
                 break;
             case 2:
                 level03CharacterList[0].gameObject.transform.position = spawnPosiiton.position;
+                level03CharacterList[0].gameObject.transform.SetParent(null);
                 level03CharacterList[0].gameObject.SetActive(true);
                 level03CharacterList.RemoveAt(0);
                 break;
             case 3:
                 level04CharacterList[0].gameObject.transform.position = spawnPosiiton.position;
+                level04CharacterList[0].gameObject.transform.SetParent(null);
                 level04CharacterList[0].gameObject.SetActive(true);
                 level04CharacterList.RemoveAt(0);
                 break;
