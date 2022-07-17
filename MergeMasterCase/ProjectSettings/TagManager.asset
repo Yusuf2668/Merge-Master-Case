@@ -7,6 +7,9 @@ TagManager:
   - Character
   - Dinosaur
   - Grid
+  - DragonBall
+  - AmmoRepository
+  - Enemy
   layers:
   - Default
   - TransparentFX

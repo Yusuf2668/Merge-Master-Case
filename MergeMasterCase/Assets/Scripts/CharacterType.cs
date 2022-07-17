@@ -7,4 +7,5 @@ public class CharacterType : ScriptableObject
 {
     public LayerMask characterLayerMask;
     public LayerMask gridLayerMask;
+
 }

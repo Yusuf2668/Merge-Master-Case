@@ -18,3 +18,4 @@ MonoBehaviour:
   gridLayerMask:
     serializedVersion: 2
     m_Bits: 256
+  ammoSpeed: 10000

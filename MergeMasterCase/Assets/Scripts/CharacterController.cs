@@ -36,7 +36,7 @@ public class CharacterController : MonoBehaviour
             canHit = false;
         }
     }
-    public void RaycastToFindMergeCharacter()
+    private void RaycastToFindMergeCharacter()
     {
         if (Physics.Raycast(transform.position, Vector3.down, out mergeCharacterHit, 20, characterType.characterLayerMask))
         {
@@ -53,18 +53,11 @@ public class CharacterController : MonoBehaviour
             }
         }
     }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - 15, transform.position.z));
-    }
-    public void CallBackLastPosition()
+    private void CallBackLastPosition()
     {
         transform.position = lastPosition;
     }
-
-    void RaycastToFindGrid()
+    private void RaycastToFindGrid()
     {
         if (Physics.Raycast(transform.position + new Vector3(0, 2, 0), Vector3.down, out gridPositionHit, Mathf.Infinity, characterType.gridLayerMask))
         {
@@ -72,4 +65,6 @@ public class CharacterController : MonoBehaviour
             lastPosition = transform.position;
         }
     }
+
+   
 }
