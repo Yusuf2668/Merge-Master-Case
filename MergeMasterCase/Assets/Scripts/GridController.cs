@@ -48,25 +48,13 @@ public class GridController : MonoBehaviour
     {
         if (selectedCharacter != null)
         {
-            Debug.Log("aldý");
-            if (Physics.Raycast(selectedCharacter.transform.position, Vector3.down, out gridHit, Mathf.Infinity, characterType.gridLayerMask) && !Physics.Raycast(selectedCharacter.transform.position, Vector3.down, Mathf.Infinity, characterType.characterLayerMask)) //seçtiðimiz karakterlerin karelere yerleþmesi için atýlan ýþýn
+            if (Physics.Raycast(selectedCharacter.transform.position, Vector3.down, out gridHit, Mathf.Infinity, characterType.gridLayerMask) && !Physics.Raycast(selectedCharacter.transform.position,Vector3.down, out characterHit, Mathf.Infinity, characterType.characterLayerMask)) //seçtiðimiz karakterlerin karelere yerleþmesi için atýlan ýþýn
             {
-                Debug.Log("býraktý");
-
                 selectedGrid = gridHit.transform.gameObject;
                 previousCharacter.GetComponent<Collider>().isTrigger = false;
                 previousCharacter.GetComponent<Rigidbody>().isKinematic = false;
-                if (!selectedCharacter.GetComponent<CharacterController>().canBackLastPosisiton)
-                {
-                    selectedCharacter.transform.position = new Vector3(selectedGrid.transform.position.x, selectedCharacter.transform.position.y, selectedGrid.transform.position.z);
-                    selectedCharacter.GetComponent<CharacterController>().lastPosition = selectedGrid.transform.position;
-                }
-            }
-            else
-            {
-                Debug.Log("býrakmadý");
-
-                selectedCharacter.GetComponent<CharacterController>().CallBackLastPosition();
+                selectedCharacter.transform.position = new Vector3(selectedGrid.transform.position.x, selectedCharacter.transform.position.y, selectedGrid.transform.position.z);
+                selectedCharacter.GetComponent<CharacterController>().lastPosition = selectedGrid.transform.position;
             }
             selectedCharacter = null;
             previousCharacter = null;
