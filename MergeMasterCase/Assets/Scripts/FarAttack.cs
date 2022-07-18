@@ -12,38 +12,53 @@ public class FarAttack : MonoBehaviour
 
     GameObject[] allEnemy;
 
-    int dragonBallLine;
-    GameObject dragonBall;
+    private int dragonBallLine;
+    private GameObject dragonBall;
 
-    float distanceToClosestTarget;
-    float distanceToTarget;
+    private float distanceToClosestTarget;
+    private float distanceToTarget;
+    public float _attackTime;
+
 
     private void Awake()
     {
+        _attackTime = characterType.AttackTime;
         dragonBallPoolController = GameObject.FindObjectOfType<DragonBallPoolController>();
-
     }
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (characterType.startGame)
         {
-            findNearEnemy();
-            Attack();
+            _attackTime -= Time.deltaTime;
+            switch (_attackTime)
+            {
+                case <= 0:
+                    findNearEnemy();
+                    Attack();
+                    _attackTime = characterType.AttackTime;
+                    break;
+            }
         }
     }
     void Attack()
     {
         dragonBall = dragonBallPoolController.dragonBallList[dragonBallLine].transform.gameObject;
+        if (dragonBall.gameObject.activeInHierarchy)
+        {
+            dragonBallLine++;
+            dragonBall = dragonBallPoolController.dragonBallList[dragonBallLine].transform.gameObject;
+
+        }
         dragonBall.transform.position = transform.GetChild(0).transform.position;
         dragonBall.transform.gameObject.SetActive(true);
-        dragonBallPoolController.dragonBallList[dragonBallLine].transform.DOMove(target.transform.position, 0.5f).OnComplete(() => dragonBallPoolController.DragonBallAddList(dragonBall));
-        dragonBallPoolController.dragonBallList.RemoveAt(dragonBallLine);
+        dragonBallPoolController.dragonBallList[dragonBallLine].transform.DOMove(target.transform.position, 0.5f);
+        dragonBallLine++;
     }
 
     void findNearEnemy()
     {
         distanceToClosestTarget = Mathf.Infinity;
-        allEnemy = GameObject.FindGameObjectsWithTag("Enemy");
+        allEnemy = GameObject.FindGameObjectsWithTag(characterType.enemyTag);
         for (int i = 0; i < allEnemy.Length; i++)
         {
             distanceToTarget = (allEnemy[i].transform.position - gameObject.transform.position).sqrMagnitude;
@@ -53,5 +68,6 @@ public class FarAttack : MonoBehaviour
                 target = allEnemy[i];
             }
         }
+        transform.LookAt(target.transform);
     }
 }

@@ -18,4 +18,12 @@ MonoBehaviour:
   gridLayerMask:
     serializedVersion: 2
     m_Bits: 256
-  ammoSpeed: 10000
+  enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 512
+  AttackTime: 2
+  walkSpeed: 1
+  characterHealth: 100
+  startGame: 1
+  enemyTag: Enemy
+  characterTag: Character

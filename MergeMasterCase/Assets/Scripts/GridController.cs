@@ -40,7 +40,7 @@ public class GridController : MonoBehaviour
                 previousCharacter.GetComponent<Collider>().isTrigger = true;
                 previousCharacter.GetComponent<Rigidbody>().isKinematic = true;
                 characterHit.transform.position = Vector3.MoveTowards(characterHit.transform.position, new Vector3(characterHit.point.x, characterHit.transform.position.y, characterHit.point.z), 1f);
-                characterHit.transform.position = new Vector3(Mathf.Clamp(characterHit.transform.position.x, -3f, 3f), 1, Mathf.Clamp(characterHit.transform.position.z, -4.4f, 0.4f));
+                characterHit.transform.position = new Vector3(Mathf.Clamp(characterHit.transform.position.x, -3f, 3f), 1, Mathf.Clamp(characterHit.transform.position.z, -3f, 1.5f));
             }
         }
     }
@@ -48,7 +48,7 @@ public class GridController : MonoBehaviour
     {
         if (selectedCharacter != null)
         {
-            if (Physics.Raycast(selectedCharacter.transform.position, Vector3.down, out gridHit, Mathf.Infinity, characterType.gridLayerMask) && !Physics.Raycast(selectedCharacter.transform.position,Vector3.down, out characterHit, Mathf.Infinity, characterType.characterLayerMask)) //seçtiðimiz karakterlerin karelere yerleþmesi için atýlan ýþýn
+            if (Physics.Raycast(selectedCharacter.transform.position, Vector3.down, out gridHit, Mathf.Infinity, characterType.gridLayerMask) && !Physics.Raycast(selectedCharacter.transform.position, Vector3.down, out characterHit, Mathf.Infinity, characterType.characterLayerMask)) //seçtiðimiz karakterlerin karelere yerleþmesi için atýlan ýþýn
             {
                 selectedGrid = gridHit.transform.gameObject;
                 previousCharacter.GetComponent<Collider>().isTrigger = false;

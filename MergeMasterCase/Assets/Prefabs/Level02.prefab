@@ -1976,13 +1976,14 @@ GameObject:
   - component: {fileID: 1008094158592881591}
   - component: {fileID: 1008094158592881590}
   - component: {fileID: 1008094158592881593}
+  - component: {fileID: 1566525285342761901}
   m_Layer: 6
   m_Name: Level02
   m_TagString: Dinosaur
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1008094159167011763
 Transform:
   m_ObjectHideFlags: 0
@@ -2065,6 +2066,20 @@ MonoBehaviour:
   lastPosition: {x: 0, y: 0, z: 0}
   _characterLevel: 2
   characterType: {fileID: 11400000, guid: 94b8dbb9134257d4d848add54b9a45f8, type: 2}
+--- !u!114 &1566525285342761901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008094159167256845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8415654739104c41a855c1d495eab69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterType: {fileID: 11400000, guid: 94b8dbb9134257d4d848add54b9a45f8, type: 2}
+  targetTag: Enemy
 --- !u!1 &1008094159167257633
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,6 +15,9 @@ public class CharacterController : MonoBehaviour
     RaycastHit mergeCharacterHit;
     RaycastHit gridPositionHit;
 
+    GameObject collisionEnemy;
+
+    float _healt;
     public int characterLevel
     {
         get { return _characterLevel; }
@@ -22,10 +25,11 @@ public class CharacterController : MonoBehaviour
 
     private void OnEnable()
     {
+        _healt = characterType.characterHealth * _characterLevel;
+         collisionEnemy = null;
         canHit = true;
         mergeController = GameObject.FindObjectOfType<MergeController>();
         RaycastToFindGrid(); // baþlanðýçta ki pozisyonlarýný gridlere göre ayarlamak için 
-
     }
 
     private void Update()
@@ -35,6 +39,10 @@ public class CharacterController : MonoBehaviour
             RaycastToFindMergeCharacter();
             canHit = false;
         }
+    }
+    public void TakeDamage(float _damageValue)
+    {
+       _healt -= characterLevel * 10;
     }
     private void RaycastToFindMergeCharacter()
     {
@@ -66,5 +74,5 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-   
+
 }
