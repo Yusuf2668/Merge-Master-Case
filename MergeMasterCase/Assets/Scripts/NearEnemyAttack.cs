@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class NearAttack : MonoBehaviour
+public class NearEnemyAttack : MonoBehaviour
 {
     [SerializeField] CharacterType characterType;
 
-    CharacterController characterController;
+    EnemyController enemyController;
 
     private GameObject target;
 
@@ -21,23 +21,21 @@ public class NearAttack : MonoBehaviour
     private bool walk;
 
     bool attack;
-    private void Start()
+    private void OnEnable()
     {
-        characterController = GetComponent<CharacterController>();
+        enemyController = GetComponent<EnemyController>();
         animator = GetComponent<Animator>();
         attackTime = 0;
         walk = true;
         animator.SetTrigger("Walk");
     }
-
-
     private void Update()
     {
         if (attack)
         {
-            AttackTheEnemy();
-            attackTime -= Time.deltaTime;
             walk = false;
+            AttackTheCharacter();
+            attackTime -= Time.deltaTime;
         }
         else
         {
@@ -45,28 +43,48 @@ public class NearAttack : MonoBehaviour
         }
         if (characterType.startGame && walk)
         {
+            animator.SetTrigger("Walk");
             findNearEnemy();
-            transform.Translate(transform.forward * Time.deltaTime * characterType.walkSpeed);
+            transform.Translate(transform.forward * Time.deltaTime * -1 * characterType.walkSpeed);
         }
     }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.gameObject.CompareTag("Enemy"))
+        if (other.gameObject.CompareTag("Dinosaur"))
         {
             attack = true;
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.transform.gameObject.CompareTag("Enemy"))
+        if (other.gameObject.CompareTag("Dinosaur"))
         {
+
             attack = false;
         }
     }
+    void AttackTheCharacter()
+    {
+        if (!target.activeInHierarchy)
+        {
+            attack = false;
+            return;
+        }
+        switch (attackTime)
+        {
+            case <= 0:
+                target.GetComponent<CharacterController>().TakeDamage(enemyController.enemyLevel * 10f);
+                attackTime = characterType.AttackTime;
+                animator.SetTrigger("Attack");
+                break;
+        }
+    }
+
     void findNearEnemy()
     {
         distanceToClosestTarget = Mathf.Infinity;
-        allEnemy = GameObject.FindGameObjectsWithTag("Enemy");
+        allEnemy = GameObject.FindGameObjectsWithTag("Dinosaur");
         if (allEnemy.Length == 0)
         {
             characterType.startGame = false;
@@ -82,23 +100,4 @@ public class NearAttack : MonoBehaviour
         }
         transform.LookAt(target.transform);
     }
-
-    void AttackTheEnemy()
-    {
-        if (!target.activeInHierarchy)
-        {
-            attack = false;
-            return;
-        }
-        switch (attackTime)
-        {
-            case <= 0:
-                target.GetComponent<EnemyController>().TakeDamage(characterController.characterLevel * 10f);
-                attackTime = characterType.AttackTime;
-                animator.SetTrigger("Attack");
-                break;
-        }
-
-    }
-
 }

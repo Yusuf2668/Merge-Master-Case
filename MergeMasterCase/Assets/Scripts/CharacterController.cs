@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharacterController : MonoBehaviour
 {
@@ -15,9 +16,9 @@ public class CharacterController : MonoBehaviour
     RaycastHit mergeCharacterHit;
     RaycastHit gridPositionHit;
 
-    GameObject collisionEnemy;
+    Slider healthBar;
 
-    float _healt;
+    public float _health;
     public int characterLevel
     {
         get { return _characterLevel; }
@@ -25,8 +26,10 @@ public class CharacterController : MonoBehaviour
 
     private void OnEnable()
     {
-        _healt = characterType.characterHealth * _characterLevel;
-         collisionEnemy = null;
+        healthBar = transform.GetChild(0).transform.GetChild(0).transform.gameObject.GetComponent<Slider>();
+        _health = characterType.characterHealth * _characterLevel;
+        healthBar.maxValue  = _health;
+        healthBar.value = _health;
         canHit = true;
         mergeController = GameObject.FindObjectOfType<MergeController>();
         RaycastToFindGrid(); // baþlanðýçta ki pozisyonlarýný gridlere göre ayarlamak için 
@@ -42,7 +45,12 @@ public class CharacterController : MonoBehaviour
     }
     public void TakeDamage(float _damageValue)
     {
-       _healt -= characterLevel * 10;
+        _health -= characterLevel * 10;
+        healthBar.value = _health;
+        if (_health <= 0)
+        {
+            transform.gameObject.SetActive(false);
+        }
     }
     private void RaycastToFindMergeCharacter()
     {

@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class FarAttack : MonoBehaviour
+public class FarEnemyAttack : MonoBehaviour
 {
     [SerializeField] CharacterType characterType;
 
-    DragonBallPoolController dragonBallPoolController;
+    EnemyBallRepositoryController enemyBallRepositoryController;
     GameObject target;
 
     GameObject[] allEnemy;
 
-    private int dragonBallLine;
-    private GameObject dragonBall;
+    private int enemyBallLine;
+    private GameObject enemyBall;
 
     private float distanceToClosestTarget;
     private float distanceToTarget;
@@ -23,7 +23,7 @@ public class FarAttack : MonoBehaviour
     private void Awake()
     {
         _attackTime = characterType.AttackTime;
-        dragonBallPoolController = GameObject.FindObjectOfType<DragonBallPoolController>();
+        enemyBallRepositoryController = GameObject.FindObjectOfType<EnemyBallRepositoryController>();
     }
     private void Update()
     {
@@ -42,26 +42,26 @@ public class FarAttack : MonoBehaviour
     }
     void Attack()
     {
-        dragonBall = dragonBallPoolController.dragonBallList[dragonBallLine].transform.gameObject;
-        if (dragonBall.gameObject.activeInHierarchy)
+        enemyBall = enemyBallRepositoryController.enemyBallList[enemyBallLine].transform.gameObject;
+        if (enemyBall.gameObject.activeInHierarchy)
         {
-            dragonBallLine++;
-            dragonBall = dragonBallPoolController.dragonBallList[dragonBallLine].transform.gameObject;
+            enemyBallLine++;
+            enemyBall = enemyBallRepositoryController.enemyBallList[enemyBallLine].transform.gameObject;
         }
-        dragonBall.transform.position = transform.GetChild(0).transform.position;
-        dragonBall.transform.gameObject.SetActive(true);
-        dragonBallPoolController.dragonBallList[dragonBallLine].transform.DOMove(target.transform.position, 0.5f);
-        dragonBallLine++;
-        if (dragonBallPoolController.dragonBallList.Count == dragonBallLine)
+        enemyBall.transform.position = transform.GetChild(1).transform.position;
+        enemyBall.transform.gameObject.SetActive(true);
+        enemyBallRepositoryController.enemyBallList[enemyBallLine].transform.DOMove(target.transform.position, 0.5f);
+        enemyBallLine++;
+        if (enemyBallRepositoryController.enemyBallList.Count == enemyBallLine)
         {
-            dragonBallLine = 0;
+            enemyBallLine = 0;
         }
     }
 
     void findNearEnemy()
     {
         distanceToClosestTarget = Mathf.Infinity;
-        allEnemy = GameObject.FindGameObjectsWithTag(characterType.enemyTag);
+        allEnemy = GameObject.FindGameObjectsWithTag(characterType.characterTag);
         for (int i = 0; i < allEnemy.Length; i++)
         {
             distanceToTarget = (allEnemy[i].transform.position - gameObject.transform.position).sqrMagnitude;

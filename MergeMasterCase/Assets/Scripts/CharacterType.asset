@@ -26,4 +26,4 @@ MonoBehaviour:
   characterHealth: 100
   startGame: 1
   enemyTag: Enemy
-  characterTag: Character
+  characterTag: Dinosaur
