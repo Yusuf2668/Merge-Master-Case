@@ -18,7 +18,7 @@ public class CharacterController : MonoBehaviour
 
     Slider healthBar;
 
-    public float _health;
+    private float _health;
     public int characterLevel
     {
         get { return _characterLevel; }

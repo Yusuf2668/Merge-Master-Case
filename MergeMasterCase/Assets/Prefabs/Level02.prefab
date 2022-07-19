@@ -1983,7 +1983,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1008094159167011763
 Transform:
   m_ObjectHideFlags: 0
@@ -2067,6 +2067,7 @@ MonoBehaviour:
   lastPosition: {x: 0, y: 0, z: 0}
   _characterLevel: 2
   characterType: {fileID: 11400000, guid: 94b8dbb9134257d4d848add54b9a45f8, type: 2}
+  _health: 0
 --- !u!114 &1566525285342761901
 MonoBehaviour:
   m_ObjectHideFlags: 0
